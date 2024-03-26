@@ -59,15 +59,18 @@
   NSArray<NSString*>* dartEntryPointArgs = options.dartEntryPointArgs;
 
   void(^engineRun)(void) = ^(void) {
-    [self.engine runWithEntrypoint:dartEntrypointFunctionName
-                        libraryURI:nil
-                      initialRoute:initialRoute
-                    entrypointArgs:dartEntryPointArgs];
+      
+      if (!self.engine.run) {
+          [self.engine runWithEntrypoint:dartEntrypointFunctionName
+                              libraryURI:nil
+                            initialRoute:initialRoute
+                          entrypointArgs:dartEntryPointArgs];
 
-    // 根据配置提前预热引擎,配置默认预热引擎
-    if (options.warmUpEngine){
-      [self warmUpEngine];
-    }
+          // 根据配置提前预热引擎,配置默认预热引擎
+          if (options.warmUpEngine){
+            [self warmUpEngine];
+          }
+      }
 
     Class clazz = NSClassFromString(@"GeneratedPluginRegistrant");
     SEL selector = NSSelectorFromString(@"registerWithRegistry:");
